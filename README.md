@@ -43,6 +43,7 @@ agent-forge/
 ```
 
 - `docs/` contains repository-level guidance and architecture notes.
+- `docs/capabilities_index.md` provides a topic-based index of reusable capabilities.
 - `skills/` contains reusable capability modules, organized by domain.
 - `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
 - `templates/` contains Markdown structures that standardize outputs and inputs.
@@ -76,6 +77,10 @@ If a project needs to break down a GitHub issue, it can reference:
 If a project needs a milestone delivered end to end, it can follow:
 
 `workflows/milestone_execution.md`
+
+If a project only needs a lightweight backlog from a goal or feature idea, it can follow:
+
+`workflows/backlog_creation_workflow.md`
 
 ### Use a template
 
