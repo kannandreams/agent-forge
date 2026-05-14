@@ -44,6 +44,7 @@ agent-forge/
 
 - `docs/` contains repository-level guidance and architecture notes.
 - `docs/capabilities_index.md` provides a topic-based index of reusable capabilities.
+- `docs/consuming_agent_forge.md` explains how downstream repositories should mount and reference the shared library.
 - `skills/` contains reusable capability modules, organized by domain.
 - `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
 - `templates/` contains Markdown structures that standardize outputs and inputs.

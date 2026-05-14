@@ -29,11 +29,14 @@
 ## Architecture
 
 - `skills/architecture/service_design.md`
+- `skills/architecture/cli_first_tool_design.md`
+- `skills/architecture/artifact_driven_integration.md`
 - `templates/architecture_template.md`
 
 ## Python
 
 - `skills/python/uv_project_setup.md`
+- `skills/python/packaging_standards.md`
 
 ## GitHub Tooling
 
