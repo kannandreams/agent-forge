@@ -106,3 +106,11 @@ Over time, `agent-forge` should become a durable library of:
 - tested examples and patterns
 
 The long-term objective is a stable capability layer that can be shared across teams and projects without turning into prompt sprawl or duplicated process docs.
+
+## Suggested Next Milestones
+
+1. Add more production-grade skills for common engineering work such as testing, code review, incident handling, and release management.
+2. Define a small set of end-to-end workflows that compose multiple skills into repeatable operating patterns.
+3. Add executable tools only where there is a real integration point or recurring automation need.
+4. Expand the examples with project-shaped walkthroughs that show how teams should apply the library.
+5. Introduce versioning and change notes once multiple projects start depending on the same capabilities.
