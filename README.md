@@ -71,7 +71,7 @@ This keeps projects small and focused while allowing the reusable system to evol
 
 If a project needs to break down a GitHub issue, it can reference:
 
-`skills/github/issue_breakdown.md`
+`skills/github/issue-breakdown/SKILL.md`
 
 ### Use a workflow
 

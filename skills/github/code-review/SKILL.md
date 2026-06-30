@@ -1,8 +1,26 @@
+---
+name: code-review
+version: 1.0.0
+description: Review a change for correctness, clarity, maintainability, and risk before merge.
+triggers:
+  - "review this pr"
+  - "code review"
+  - "check my diff"
+  - "review this change"
+  - "pre-merge review"
+allowed-tools: [Read, Grep, Glob]
+---
+
 # Code Review Skill
 
-## Purpose
+## When to invoke this skill
 
-Review a change for correctness, clarity, maintainability, and risk before merge.
+Review a change for correctness, clarity, maintainability, and risk before
+merge.
+
+Do NOT use this for architecture review or design review — those need broader
+context about system structure and long-term direction. This skill focuses on
+code-level correctness within a specific change set.
 
 ## Inputs
 

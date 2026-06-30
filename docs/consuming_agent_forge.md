@@ -39,7 +39,7 @@ Reference `agent-forge` from the consuming repo with paths like:
 
 ```md
 - `../agent-forge/docs/capabilities_index.md`
-- `../agent-forge/skills/python/uv_project_setup.md`
+- `../agent-forge/skills/python/uv-project-setup/SKILL.md`
 ```
 
 Use this only when your agent runtime can read sibling directories. It is simple, but less reliable than mounting inside the repo.
@@ -124,11 +124,11 @@ Primary reference:
 - `vendor/agent-forge/docs/capabilities_index.md`
 
 Use these topic files for this project:
-- `vendor/agent-forge/skills/python/uv_project_setup.md`
-- `vendor/agent-forge/skills/python/packaging_standards.md`
-- `vendor/agent-forge/skills/architecture/cli_first_tool_design.md`
-- `vendor/agent-forge/skills/architecture/artifact_driven_integration.md`
-- `vendor/agent-forge/skills/testing/test_strategy.md`
+- `vendor/agent-forge/skills/python/uv-project-setup/SKILL.md`
+- `vendor/agent-forge/skills/python/packaging-standards/SKILL.md`
+- `vendor/agent-forge/skills/architecture/cli-first-tool-design/SKILL.md`
+- `vendor/agent-forge/skills/architecture/artifact-driven-integration/SKILL.md`
+- `vendor/agent-forge/skills/testing/test-strategy/SKILL.md`
 
 ## Project Constraints
 

@@ -4,39 +4,39 @@
 
 ## Planning
 
-- `skills/github/backlog_creation.md`
-- `skills/github/project_milestone.md`
-- `skills/github/issue_breakdown.md`
+- `skills/github/backlog-creation/SKILL.md`
+- `skills/github/project-milestone/SKILL.md`
+- `skills/github/issue-breakdown/SKILL.md`
 - `workflows/backlog_creation_workflow.md`
 - `workflows/milestone_execution.md`
 
 ## Quality
 
-- `skills/github/code_review.md`
-- `skills/testing/test_strategy.md`
+- `skills/github/code-review/SKILL.md`
+- `skills/testing/test-strategy/SKILL.md`
 - `workflows/code_review_workflow.md`
 
 ## Delivery
 
-- `skills/release/release_management.md`
+- `skills/release/release-management/SKILL.md`
 - `workflows/release_workflow.md`
 
 ## Operations
 
-- `skills/incident/incident_response.md`
+- `skills/incident/incident-response/SKILL.md`
 - `workflows/incident_response_workflow.md`
 
 ## Architecture
 
-- `skills/architecture/service_design.md`
-- `skills/architecture/cli_first_tool_design.md`
-- `skills/architecture/artifact_driven_integration.md`
+- `skills/architecture/service-design/SKILL.md`
+- `skills/architecture/cli-first-tool-design/SKILL.md`
+- `skills/architecture/artifact-driven-integration/SKILL.md`
 - `templates/architecture_template.md`
 
 ## Python
 
-- `skills/python/uv_project_setup.md`
-- `skills/python/packaging_standards.md`
+- `skills/python/uv-project-setup/SKILL.md`
+- `skills/python/packaging-standards/SKILL.md`
 
 ## GitHub Tooling
 
@@ -49,6 +49,6 @@ Downstream repos should reference only the relevant topic entries for the task a
 Example:
 
 ```md
-For lightweight planning, use `skills/github/backlog_creation.md` and `workflows/backlog_creation_workflow.md`.
-For release tasks, use `skills/release/release_management.md` and `workflows/release_workflow.md`.
+For lightweight planning, use `skills/github/backlog-creation/SKILL.md` and `workflows/backlog_creation_workflow.md`.
+For release tasks, use `skills/release/release-management/SKILL.md` and `workflows/release_workflow.md`.
 ```

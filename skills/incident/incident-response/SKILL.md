@@ -1,8 +1,28 @@
+---
+name: incident-response
+version: 1.0.0
+description: Guide the handling of a production incident from detection through stabilization and follow-up.
+triggers:
+  - "incident"
+  - "production issue"
+  - "outage"
+  - "handle incident"
+  - "incident response"
+  - "something is down"
+allowed-tools: [Read, Bash]
+---
+
 # Incident Response Skill
 
-## Purpose
+## When to invoke this skill
 
-Guide the handling of a production incident from detection through stabilization and follow-up.
+Guide the handling of a production incident from detection through
+stabilization and follow-up.
+
+Do NOT use this for postmortem writing or root cause analysis — those come
+after stabilization and investigation. This skill is for the active response
+phase: contain, mitigate, communicate, and preserve context for later
+analysis.
 
 ## Inputs
 

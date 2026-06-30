@@ -1,8 +1,26 @@
+---
+name: release-management
+version: 1.0.0
+description: Plan and coordinate a software release with enough structure to reduce avoidable release risk.
+triggers:
+  - "plan a release"
+  - "release checklist"
+  - "ship this version"
+  - "prepare release"
+  - "cut a release"
+allowed-tools: [Read, Write]
+---
+
 # Release Management Skill
 
-## Purpose
+## When to invoke this skill
 
-Plan and coordinate a software release with enough structure to reduce avoidable release risk.
+Plan and coordinate a software release with enough structure to reduce
+avoidable release risk.
+
+Do NOT use this for ongoing deployment automation or CI pipeline setup — this
+skill is about the human planning and coordination around a specific release
+event: what goes in, what gets validated, and how to roll back.
 
 ## Inputs
 

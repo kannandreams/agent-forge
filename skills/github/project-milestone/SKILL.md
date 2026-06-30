@@ -1,10 +1,28 @@
+---
+name: project-milestone
+version: 1.0.0
+description: Plan and structure a project milestone into an executable set of work items with clear ownership, dependencies, and acceptance criteria.
+triggers:
+  - "plan a milestone"
+  - "milestone planning"
+  - "scope this phase"
+  - "create milestone plan"
+  - "plan the next phase"
+allowed-tools: [Read, Write]
+---
+
 # Project Milestone Skill
 
-## Purpose
+## When to invoke this skill
 
-Plan and structure a project milestone so that a team can move from a goal to an executable set of work items with clear ownership, dependencies, and acceptance criteria.
+Plan and structure a project milestone so that a team can move from a goal to
+an executable set of work items with clear ownership, dependencies, and
+acceptance criteria. Use this when a milestone needs to be translated into
+concrete work that can be scheduled, tracked, and completed.
 
-Use this skill when a milestone needs to be translated into concrete work that can be scheduled, tracked, and completed.
+Do NOT use this for lightweight backlogs — `backlog-creation` handles that.
+Do NOT use this for single-issue breakdowns — `issue-breakdown` handles that.
+This skill is for multi-work-stream milestones that span a team.
 
 ## Inputs
 

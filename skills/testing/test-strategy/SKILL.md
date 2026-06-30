@@ -1,10 +1,27 @@
+---
+name: test-strategy
+version: 1.0.0
+description: Define a practical testing approach for a codebase, feature, or change set.
+triggers:
+  - "test strategy"
+  - "testing plan"
+  - "what to test"
+  - "test approach"
+  - "define tests"
+allowed-tools: [Read, Write]
+---
+
 # Test Strategy Skill
 
-## Purpose
+## When to invoke this skill
 
 Define a practical testing approach for a codebase, feature, or change set.
+Use this when a team needs to decide what to test, at what level, and with
+what priority.
 
-Use this skill when a team needs to decide what to test, at what level, and with what priority.
+Do NOT use this for writing actual test code — this skill defines the strategy
+and prioritization, not the implementation. Writing tests is an execution
+step that follows from the strategy.
 
 ## Inputs
 

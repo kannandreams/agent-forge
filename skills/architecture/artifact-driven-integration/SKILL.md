@@ -1,8 +1,25 @@
+---
+name: artifact-driven-integration
+version: 1.0.0
+description: Integrate with an existing system by consuming its stable artifacts instead of coupling directly to internal runtime behavior.
+triggers:
+  - "integrate with existing system"
+  - "consume artifacts"
+  - "artifact-driven integration"
+  - "parse generated output"
+allowed-tools: [Read, Write]
+---
+
 # Artifact-Driven Integration Skill
 
-## Purpose
+## When to invoke this skill
 
-Integrate with an existing system by consuming its stable artifacts instead of coupling directly to internal runtime behavior.
+Integrate with an existing system by consuming its stable artifacts instead of
+coupling directly to internal runtime behavior.
+
+Do NOT use this for live API integration or runtime coupling — this skill is
+about offline artifact consumption (generated files, schemas, static exports),
+not real-time service calls or message passing.
 
 ## Inputs
 

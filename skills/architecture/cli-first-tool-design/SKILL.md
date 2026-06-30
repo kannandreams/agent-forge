@@ -1,8 +1,25 @@
+---
+name: cli-first-tool-design
+version: 1.0.0
+description: Design an engineering tool to prove its core workflow through a command-line interface before adding richer interfaces.
+triggers:
+  - "design a cli"
+  - "cli-first"
+  - "cli tool design"
+  - "command line interface design"
+allowed-tools: [Read, Write]
+---
+
 # CLI-First Tool Design Skill
 
-## Purpose
+## When to invoke this skill
 
-Design an engineering tool to prove its core workflow through a command-line interface before adding richer interfaces.
+Design an engineering tool to prove its core workflow through a command-line
+interface before adding richer interfaces.
+
+Do NOT use this for API design, UI design, or non-CLI interfaces — this skill
+is specifically about validating a tool's behavior through deterministic,
+batch-oriented command-line execution.
 
 ## Inputs
 

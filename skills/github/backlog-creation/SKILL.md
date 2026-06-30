@@ -1,10 +1,27 @@
+---
+name: backlog-creation
+version: 1.0.0
+description: Turn a project goal, milestone, or feature idea into a simple backlog of actionable items.
+triggers:
+  - "create a backlog"
+  - "break this down into tasks"
+  - "plan work items"
+  - "what needs to be done"
+  - "backlog this"
+allowed-tools: [Read, Write]
+---
+
 # Backlog Creation Skill
 
-## Purpose
+## When to invoke this skill
 
-Turn a project goal, milestone, or feature idea into a simple backlog of actionable items.
+Turn a project goal, milestone, or feature idea into a lightweight backlog of
+actionable items. Use this when you want a planning step that produces work
+items without building a full milestone plan.
 
-Use this when you want a lightweight planning step that produces work items without building a full milestone plan.
+Do NOT use this for a complete milestone with dates, ownership, and execution
+tracking — `project-milestone` handles that. Do NOT use this for breaking down
+a single GitHub issue into sub-tasks — `issue-breakdown` handles that.
 
 ## Inputs
 

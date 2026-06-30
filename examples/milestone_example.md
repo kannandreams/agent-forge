@@ -6,8 +6,8 @@ A team needs to ship a new API endpoint and coordinate the work across implement
 
 ## Applied Capability
 
-- `skills/github/project_milestone.md`
-- `skills/github/issue_breakdown.md`
+- `skills/github/project-milestone/SKILL.md`
+- `skills/github/issue-breakdown/SKILL.md`
 - `templates/milestone_template.md`
 - `workflows/milestone_execution.md`
 
