@@ -8,6 +8,6 @@ tools/quality/check_skill_schema.sh
 tools/quality/check_capabilities_index.sh
 tools/quality/check_markdown_quality.sh
 tools/quality/check_shell.sh
-tools/quality/check_python.sh
+tools/quality/check_node.sh
 
 echo "All quality checks passed."

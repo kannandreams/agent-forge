@@ -52,7 +52,7 @@ agent-forge/
 - `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
 - `templates/` contains Markdown structures that standardize outputs and inputs.
 - `tools/` contains narrow executable helpers and tool-specific guidance.
-- `bin/` contains user-facing command wrappers such as `agent-wrap`.
+- `bin/` contains the `agent-forge` CLI wrapper.
 - `agents/` contains agent-oriented assets and conventions.
 - `examples/` contains practical examples of how the system is used in real projects.
 
@@ -99,7 +99,150 @@ If a project needs a consistent milestone plan, it can use:
 
 To browse skills, view docs, or install a skill through `npx skills add`, run:
 
-`bin/agent-wrap`
+`bin/agent-forge`
+
+## CLI Usage
+
+`agent-forge` is the local command for browsing this capability library. You can
+run it directly from this GitHub repo with `npx`:
+
+```bash
+npx github:kannandreams/agent-forge
+```
+
+For development inside this repository, the local executable also works:
+
+```bash
+bin/agent-forge
+```
+
+If you want a persistent local command from a checkout:
+
+```bash
+npm link
+```
+
+You can also symlink the executable into your `PATH`:
+
+```bash
+ln -s /path/to/agent-forge/bin/agent-forge ~/.local/bin/agent-forge
+```
+
+Use `--dry-run` when you want to preview the `npx skills add` command without
+installing anything. The actual install command stays:
+
+```bash
+npx skills add kannandreams/agent-forge <skill-path>
+```
+
+If the command is installed outside this checkout and cannot locate the
+capability files, point it at this repository:
+
+```bash
+export AGENT_FORGE_HOME=/path/to/agent-forge
+```
+
+### Help output
+
+Command:
+
+```bash
+bin/agent-forge --help
+```
+
+Captured output:
+
+```text
+usage: agent-forge [-h] [--source SOURCE] [--npx-package NPX_PACKAGE]
+                   [--dry-run] [--list-skills]
+
+TUI wrapper for browsing agent-forge capabilities, viewing Markdown docs, and
+installing skills through npx.
+
+options:
+  -h, --help            show this help message and exit
+  --source SOURCE       skill source repo (default: kannandreams/agent-forge)
+  --npx-package NPX_PACKAGE
+                        npx package name for the skills CLI (default: skills)
+  --dry-run             print install commands instead of running them
+  --list-skills         print available skills and exit
+```
+
+### List skills
+
+Command:
+
+```bash
+bin/agent-forge --list-skills
+```
+
+Captured output excerpt:
+
+```text
+ 1. artifact-driven-integration                Integrate with an existing system by consuming its stable artifacts instead of coupling directly to internal runtime behavior.
+ 2. cli-first-tool-design                      Design an engineering tool to prove its core workflow through a command-line interface before adding richer interfaces.
+ 3. service-design                             Define the shape of a service before implementation by clarifying responsibilities, boundaries, interfaces, data flow, and operational concerns.
+ 4. ci-cd-pipeline                             Design and configure a CI/CD pipeline that builds, tests, and deploys software with minimal manual intervention.
+ 5. cloudflare-pages-web-analytics-status      Interpret Cloudflare Pages and Web Analytics status output to decide whether deployment analytics are present, healthy, and actionable.
+...
+17. just-command-orchestration                 Design a Justfile that centralizes project command wrappers and execution orchestration without hiding business logic.
+```
+
+### Preview skill installation
+
+Command:
+
+```bash
+printf '1\n8\n\n0\n0\n' | bin/agent-forge --dry-run
+```
+
+Captured output excerpt:
+
+```text
+agent-forge
+==========
+
+Install skill: code-review
+
+Source: kannandreams/agent-forge
+Path:   skills/github/code-review/SKILL.md
+
+Dry run command:
+  npx skills add kannandreams/agent-forge skills/github/code-review/SKILL.md
+```
+
+### View rendered docs
+
+Command:
+
+```bash
+printf '2\n1\nq\n0\n0\n' | bin/agent-forge --dry-run
+```
+
+Captured output excerpt:
+
+```text
+agent-forge
+==========
+
+View Markdown docs
+
+ 1. README.md
+ 2. AGENTS.md
+ 3. CHANGELOG.md
+ 4. TODO.md
+ 5. docs/agent-forge-cli.md
+...
+
+Viewing README.md
+Press Esc, q, or Enter to return.
+----------------------------------------
+
+agent-forge
+
+`agent-forge` is a reusable engineering capability library for projects that
+want shared operating practices without copying process notes into every repo.
+```
 
 ## Contribution Standard
 

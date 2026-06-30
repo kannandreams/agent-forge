@@ -1,0 +1,29 @@
+{
+  "name": "agent-forge",
+  "version": "0.1.0",
+  "description": "CLI wrapper for browsing and installing agent-forge capabilities.",
+  "license": "MIT",
+  "bin": {
+    "agent-forge": "./bin/agent-forge"
+  },
+  "files": [
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "README.md",
+    "TODO.md",
+    "bin/agent-forge",
+    "docs/",
+    "examples/",
+    "skills/",
+    "templates/",
+    "workflows/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "tools/quality/check_all.sh",
+    "check:node": "tools/quality/check_node.sh"
+  },
+  "dependencies": {}
+}

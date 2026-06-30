@@ -35,7 +35,7 @@
 ## Tooling
 
 - `skills/tooling/just-command-orchestration/SKILL.md`
-- `bin/agent-wrap`
+- `bin/agent-forge`
 - `tools/quality/check_all.sh`
 
 ## Operations

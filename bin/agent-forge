@@ -1,0 +1,488 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const path = require("path");
+const readline = require("readline");
+const { spawnSync } = require("child_process");
+
+const DEFAULT_SOURCE = "kannandreams/agent-forge";
+const DEFAULT_NPX_PACKAGE = "skills";
+
+let pipedLines = null;
+let pipedIndex = 0;
+
+if (!process.stdin.isTTY) {
+  pipedLines = fs.readFileSync(0, "utf8").split(/\r?\n/);
+}
+
+function looksLikeAgentForgeRoot(candidate) {
+  return (
+    fs.existsSync(path.join(candidate, "skills")) &&
+    fs.existsSync(path.join(candidate, "docs", "capabilities_index.md"))
+  );
+}
+
+function findUpwards(start) {
+  let current = fs.statSync(start).isFile() ? path.dirname(start) : start;
+  current = path.resolve(current);
+
+  while (true) {
+    if (looksLikeAgentForgeRoot(current)) {
+      return current;
+    }
+
+    const parent = path.dirname(current);
+    if (parent === current) {
+      return null;
+    }
+    current = parent;
+  }
+}
+
+function resolveCapabilityRoot() {
+  if (process.env.AGENT_FORGE_HOME) {
+    const root = path.resolve(process.env.AGENT_FORGE_HOME);
+    if (!looksLikeAgentForgeRoot(root)) {
+      console.error(`AGENT_FORGE_HOME does not look like an agent-forge repo: ${root}`);
+      process.exit(1);
+    }
+    return root;
+  }
+
+  const packageRoot = findUpwards(__filename);
+  if (packageRoot) {
+    return packageRoot;
+  }
+
+  const cwdRoot = findUpwards(process.cwd());
+  if (cwdRoot) {
+    return cwdRoot;
+  }
+
+  console.error(
+    "Could not locate agent-forge capabilities. Set AGENT_FORGE_HOME to the agent-forge repository path.",
+  );
+  process.exit(1);
+}
+
+const ROOT = resolveCapabilityRoot();
+
+function usage() {
+  console.log(`usage: agent-forge [-h] [--source SOURCE] [--npx-package NPX_PACKAGE]
+                   [--dry-run] [--list-skills]
+
+TUI wrapper for browsing agent-forge capabilities, viewing Markdown docs, and
+installing skills through npx.
+
+options:
+  -h, --help            show this help message and exit
+  --source SOURCE       skill source repo (default: ${DEFAULT_SOURCE})
+  --npx-package NPX_PACKAGE
+                        npx package name for the skills CLI (default: ${DEFAULT_NPX_PACKAGE})
+  --dry-run             print install commands instead of running them
+  --list-skills         print available skills and exit`);
+}
+
+function parseArgs(argv) {
+  const args = {
+    source: process.env.AGENT_FORGE_SOURCE || DEFAULT_SOURCE,
+    npxPackage: process.env.AGENT_FORGE_NPX_PACKAGE || DEFAULT_NPX_PACKAGE,
+    dryRun: false,
+    listSkills: false,
+  };
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === "-h" || arg === "--help") {
+      usage();
+      process.exit(0);
+    }
+    if (arg === "--source") {
+      if (!argv[i + 1] || argv[i + 1].startsWith("-")) {
+        console.error("Error: --source requires a value");
+        process.exit(1);
+      }
+      args.source = argv[i + 1];
+      i += 1;
+    } else if (arg === "--npx-package") {
+      if (!argv[i + 1] || argv[i + 1].startsWith("-")) {
+        console.error("Error: --npx-package requires a value");
+        process.exit(1);
+      }
+      args.npxPackage = argv[i + 1];
+      i += 1;
+    } else if (arg === "--dry-run") {
+      args.dryRun = true;
+    } else if (arg === "--list-skills") {
+      args.listSkills = true;
+    } else {
+      console.error(`Unknown argument: ${arg}`);
+      usage();
+      process.exit(1);
+    }
+  }
+
+  return args;
+}
+
+function walkSkillFiles() {
+  const skillsRoot = path.join(ROOT, "skills");
+  const files = [];
+
+  for (const domain of fs.readdirSync(skillsRoot).sort()) {
+    const domainPath = path.join(skillsRoot, domain);
+    if (!fs.statSync(domainPath).isDirectory()) {
+      continue;
+    }
+    for (const skill of fs.readdirSync(domainPath).sort()) {
+      const skillPath = path.join(domainPath, skill, "SKILL.md");
+      if (fs.existsSync(skillPath)) {
+        files.push(skillPath);
+      }
+    }
+  }
+
+  return files;
+}
+
+function frontmatterValue(file, key) {
+  const prefix = `${key}:`;
+  const lines = fs.readFileSync(file, "utf8").split(/\r?\n/);
+  for (const line of lines) {
+    if (line.startsWith(prefix)) {
+      return line.slice(prefix.length).trim();
+    }
+  }
+  return null;
+}
+
+function relativePath(file) {
+  return path.relative(ROOT, file).split(path.sep).join("/");
+}
+
+function loadSkills() {
+  return walkSkillFiles().map((file) => ({
+    name: frontmatterValue(file, "name") || path.basename(path.dirname(file)),
+    description: frontmatterValue(file, "description") || "No description",
+    path: relativePath(file),
+  }));
+}
+
+function loadDocs() {
+  const docs = [];
+  for (const name of ["README.md", "AGENTS.md", "CHANGELOG.md", "TODO.md"]) {
+    if (fs.existsSync(path.join(ROOT, name))) {
+      docs.push(name);
+    }
+  }
+
+  for (const folder of ["docs", "workflows", "templates", "examples"]) {
+    const folderPath = path.join(ROOT, folder);
+    if (!fs.existsSync(folderPath)) {
+      continue;
+    }
+    for (const file of fs.readdirSync(folderPath).sort()) {
+      if (file.endsWith(".md")) {
+        docs.push(`${folder}/${file}`);
+      }
+    }
+  }
+
+  return docs;
+}
+
+function clearScreen() {
+  if (process.stdout.isTTY && process.env.TERM) {
+    process.stdout.write("\x1Bc");
+  } else {
+    console.log();
+  }
+}
+
+function printHeader() {
+  clearScreen();
+  console.log("agent-forge");
+  console.log("==========");
+  console.log();
+}
+
+function printSkills(skills) {
+  skills.forEach((skill, index) => {
+    console.log(`${String(index + 1).padStart(2)}. ${skill.name.padEnd(42)} ${skill.description}`);
+  });
+}
+
+function shellQuote(value) {
+  if (/^[A-Za-z0-9_./:@-]+$/.test(value)) {
+    return value;
+  }
+  return `'${value.replace(/'/g, "'\\''")}'`;
+}
+
+function printCommand(command) {
+  console.log(`  ${command.map(shellQuote).join(" ")}`);
+}
+
+function readFromPipe() {
+  if (!pipedLines) {
+    return null;
+  }
+  if (pipedIndex >= pipedLines.length) {
+    return "";
+  }
+  const value = pipedLines[pipedIndex];
+  pipedIndex += 1;
+  return value;
+}
+
+function readChoice(prompt) {
+  const piped = readFromPipe();
+  if (piped !== null) {
+    process.stdout.write(prompt);
+    return Promise.resolve(piped.trim());
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question(prompt, (answer) => {
+      rl.close();
+      resolve(answer.trim());
+    });
+  });
+}
+
+function readSingleKey() {
+  const piped = readFromPipe();
+  if (piped !== null) {
+    return Promise.resolve(piped);
+  }
+
+  if (!process.stdin.isTTY) {
+    return Promise.resolve("");
+  }
+
+  return new Promise((resolve) => {
+    const stdin = process.stdin;
+    const previousRawMode = stdin.isRaw;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.once("data", (buffer) => {
+      stdin.setRawMode(previousRawMode);
+      resolve(buffer.toString("utf8"));
+    });
+  });
+}
+
+async function pause() {
+  await readChoice("\nPress Enter to continue...");
+}
+
+function installCommand(args, skill) {
+  return ["npx", args.npxPackage, "add", args.source, skill.path];
+}
+
+async function runSkillInstall(args, skill) {
+  const command = installCommand(args, skill);
+
+  printHeader();
+  console.log(`Install skill: ${skill.name}`);
+  console.log();
+  console.log(`Source: ${args.source}`);
+  console.log(`Path:   ${skill.path}`);
+  console.log();
+
+  if (args.dryRun) {
+    console.log("Dry run command:");
+    printCommand(command);
+    await pause();
+    return;
+  }
+
+  console.log("Running:");
+  printCommand(command);
+  console.log();
+  spawnSync(command[0], command.slice(1), { stdio: "inherit" });
+  await pause();
+}
+
+async function installSkillMenu(args, skills) {
+  while (true) {
+    printHeader();
+    console.log("Install a skill");
+    console.log();
+    printSkills(skills);
+    console.log();
+    console.log("0. Back");
+    console.log();
+
+    const choice = await readChoice("Select a skill: ");
+    if (["0", "q", "Q"].includes(choice)) {
+      return;
+    }
+
+    if (/^\d+$/.test(choice)) {
+      const index = Number(choice) - 1;
+      if (index >= 0 && index < skills.length) {
+        await runSkillInstall(args, skills[index]);
+      }
+    }
+  }
+}
+
+function ansi(code) {
+  return process.stdout.isTTY && process.env.TERM ? `\x1B[${code}m` : "";
+}
+
+function renderMarkdownLine(line) {
+  const bold = ansi("1");
+  const cyan = ansi("36");
+  const normal = ansi("0");
+
+  if (line.startsWith("# ")) {
+    return `${bold}${line.slice(2)}${normal}`;
+  }
+  if (line.startsWith("## ")) {
+    return `\n${cyan}${line.slice(3)}${normal}`;
+  }
+  if (line.startsWith("### ")) {
+    return `\n${bold}${line.slice(4)}${normal}`;
+  }
+  if (line.startsWith("- ")) {
+    return `  - ${line.slice(2)}`;
+  }
+  return line;
+}
+
+async function viewMarkdown(docPath) {
+  if (process.stdout.isTTY && process.env.TERM) {
+    process.stdout.write("\x1B[?1049h");
+  }
+
+  try {
+    clearScreen();
+    console.log(`Viewing ${docPath}`);
+    console.log("Press Esc, q, or Enter to return.");
+    console.log("----------------------------------------");
+    console.log();
+
+    const content = fs.readFileSync(path.join(ROOT, docPath), "utf8");
+    for (const line of content.split(/\r?\n/)) {
+      console.log(renderMarkdownLine(line));
+    }
+
+    console.log("----------------------------------------");
+    process.stdout.write("Press Esc, q, or Enter to return.");
+
+    while (true) {
+      const key = await readSingleKey();
+      if (["\x1B", "q", "Q", "", "\n", "\r"].includes(key)) {
+        break;
+      }
+    }
+  } finally {
+    if (process.stdout.isTTY && process.env.TERM) {
+      process.stdout.write("\x1B[?1049l");
+    }
+  }
+}
+
+async function docsMenu() {
+  const docs = loadDocs();
+
+  while (true) {
+    printHeader();
+    console.log("View Markdown docs");
+    console.log();
+
+    docs.forEach((docPath, index) => {
+      console.log(`${String(index + 1).padStart(2)}. ${docPath}`);
+    });
+
+    console.log();
+    console.log("0. Back");
+    console.log();
+
+    const choice = await readChoice("Select a doc: ");
+    if (["0", "q", "Q"].includes(choice)) {
+      return;
+    }
+
+    if (/^\d+$/.test(choice)) {
+      const index = Number(choice) - 1;
+      if (index >= 0 && index < docs.length) {
+        await viewMarkdown(docs[index]);
+      }
+    }
+  }
+}
+
+async function capabilitiesMenu(skills) {
+  printHeader();
+  console.log("Capabilities");
+  console.log();
+  printSkills(skills);
+  await pause();
+}
+
+async function showInstallFormat(args) {
+  printHeader();
+  console.log("Command format:");
+  console.log();
+  console.log(`  npx ${args.npxPackage} add ${args.source} <skill-path>`);
+  console.log();
+  console.log("Example:");
+  console.log();
+  printCommand(["npx", args.npxPackage, "add", args.source, "skills/github/code-review/SKILL.md"]);
+  await pause();
+}
+
+async function mainMenu(args) {
+  const skills = loadSkills();
+
+  while (true) {
+    printHeader();
+    console.log("1. Install a skill with npx");
+    console.log("2. View rendered Markdown docs");
+    console.log("3. List capabilities");
+    console.log("4. Show install command format");
+    console.log("0. Exit");
+    console.log();
+
+    const choice = await readChoice("Select an option: ");
+    if (choice === "1") {
+      await installSkillMenu(args, skills);
+    } else if (choice === "2") {
+      await docsMenu();
+    } else if (choice === "3") {
+      await capabilitiesMenu(skills);
+    } else if (choice === "4") {
+      await showInstallFormat(args);
+    } else if (["0", "q", "Q"].includes(choice)) {
+      return 0;
+    }
+  }
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+
+  if (args.listSkills) {
+    printSkills(loadSkills());
+    return 0;
+  }
+
+  return mainMenu(args);
+}
+
+main()
+  .then((code) => {
+    process.exitCode = code;
+  })
+  .catch((error) => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });

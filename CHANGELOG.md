@@ -12,8 +12,10 @@
 - `Justfile`, local Git hook samples, hook installation docs, and lightweight
   quality checks for skill schema, capability index drift, Markdown, and shell
   scripts.
-- Python `agent-wrap` CLI wrapper for browsing skills, viewing rendered
+- Node/npm `agent-forge` CLI wrapper for browsing skills, viewing rendered
   Markdown docs, and invoking `npx skills add` for selected skills.
+- npm package metadata and `agent-forge` bin entry for running the CLI with
+  `npx github:kannandreams/agent-forge`.
 
 ## 1.0.0 (2026-06-30)
 
