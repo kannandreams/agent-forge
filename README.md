@@ -115,13 +115,12 @@ The long-term objective is a stable capability layer that can be shared across t
 
 ## Suggested Next Milestones
 
-1. Add CI/CD, security review, and debugging skills to cover more of the
-   engineering lifecycle.
-2. Add MCP server integration tooling and agent-specific configuration
+1. Add MCP server integration tooling and agent-specific configuration
    templates.
-3. Expand the tools layer with a project health checker and a release
+2. Expand the tools layer with a project health checker and a release
    validator.
-4. Add more agent-specific configuration examples (OpenCode, Claude Code,
+3. Add more agent-specific configuration examples (OpenCode, Claude Code,
    Codex).
-5. Introduce automated testing of skills and workflows to validate that
+4. Introduce automated testing of skills and workflows to validate that
    composed sequences produce correct outputs.
+5. Add database migration, API integration, and observability skills.

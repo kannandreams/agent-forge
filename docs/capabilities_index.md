@@ -13,17 +13,20 @@
 ## Quality
 
 - `skills/github/code-review/SKILL.md`
+- `skills/security/security-review/SKILL.md`
 - `skills/testing/test-strategy/SKILL.md`
 - `workflows/code_review_workflow.md`
 
 ## Delivery
 
 - `skills/release/release-management/SKILL.md`
+- `skills/ci-cd/ci-cd-pipeline/SKILL.md`
 - `workflows/release_workflow.md`
 
 ## Operations
 
 - `skills/incident/incident-response/SKILL.md`
+- `skills/debugging/debugging/SKILL.md`
 - `workflows/incident_response_workflow.md`
 
 ## Architecture

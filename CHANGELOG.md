@@ -4,9 +4,10 @@
 
 ### Added
 
-- 12 production-grade skills across 6 domains (architecture, github, incident,
-  python, release, testing) with YAML frontmatter, triggers, and
-  `allowed-tools`.
+- 15 production-grade skills across 9 domains (architecture, ci-cd, debugging,
+  github, incident, python, release, security, testing) with YAML frontmatter,
+  triggers, and `allowed-tools`.
+- 3 lifecycle skills: `ci-cd-pipeline`, `security-review`, `debugging`.
 - `npx skills add` compatibility — all skills structured as
   `skills/<domain>/<name>/SKILL.md` directories.
 - `version` and `triggers` frontmatter fields on all skills.
@@ -22,7 +23,7 @@
 - 5 existing workflows: `backlog_creation_workflow`, `code_review_workflow`,
   `milestone_execution`, `release_workflow`, `incident_response_workflow`.
 - 2 templates: `architecture_template`, `milestone_template`.
-- 1 tool: `tools/github/backlog_to_project.sh`.
+- 3 tools: `backlog_to_project.sh`, `changelog.sh`, `scaffold.sh`.
 
 ### Changed
 
