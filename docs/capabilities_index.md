@@ -32,11 +32,19 @@
 - `skills/ci-cd/ci-cd-pipeline/SKILL.md`
 - `workflows/release_workflow.md`
 
+## Tooling
+
+- `skills/tooling/just-command-orchestration/SKILL.md`
+
 ## Operations
 
 - `skills/incident/incident-response/SKILL.md`
 - `skills/debugging/debugging/SKILL.md`
 - `workflows/incident_response_workflow.md`
+
+## Cloudflare
+
+- `skills/cloudflare/cloudflare-pages-web-analytics-status/SKILL.md`
 
 ## Architecture
 

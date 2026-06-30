@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `just-command-orchestration` skill for centralizing project command wrappers
+  and execution orchestration in a `Justfile`.
+- `cloudflare-pages-web-analytics-status` skill for interpreting Cloudflare
+  Pages and Web Analytics status output, including guidance on when MCP is
+  useful versus unnecessary.
+
 ## 1.0.0 (2026-06-30)
 
 ### Added
