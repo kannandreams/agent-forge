@@ -115,8 +115,13 @@ The long-term objective is a stable capability layer that can be shared across t
 
 ## Suggested Next Milestones
 
-1. Add more production-grade skills for common engineering work such as testing, code review, incident handling, and release management.
-2. Define a small set of end-to-end workflows that compose multiple skills into repeatable operating patterns.
-3. Add executable tools only where there is a real integration point or recurring automation need.
-4. Expand the examples with project-shaped walkthroughs that show how teams should apply the library.
-5. Introduce versioning and change notes once multiple projects start depending on the same capabilities.
+1. Add CI/CD, security review, and debugging skills to cover more of the
+   engineering lifecycle.
+2. Add MCP server integration tooling and agent-specific configuration
+   templates.
+3. Expand the tools layer with a project health checker and a release
+   validator.
+4. Add more agent-specific configuration examples (OpenCode, Claude Code,
+   Codex).
+5. Introduce automated testing of skills and workflows to validate that
+   composed sequences produce correct outputs.

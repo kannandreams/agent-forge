@@ -1,10 +1,22 @@
 # Project Tools
 
-This folder is reserved for project-level tooling that supports reusable execution patterns.
+This folder contains project-level tooling that supports reusable execution
+patterns.
 
-Expected future content may include:
+## Tools
 
-- workspace helpers
-- task orchestration utilities
-- local project automation
-- validation and reporting scripts
+- `scaffold.sh` — scaffold a new Python project following agent-forge
+  packaging standards and `uv` conventions.
+
+## Usage
+
+```bash
+# Scaffold a new library project
+./tools/project/scaffold.sh my-library
+
+# Scaffold a CLI with flat layout
+./tools/project/scaffold.sh my-cli --layout flat --python 3.11
+
+# Preview what would be created
+./tools/project/scaffold.sh my-project --dry-run
+```

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "code-review": {
+      "source": "kannandreams/agent-forge",
+      "sourceType": "github",
+      "skillPath": "skills/github/code-review/SKILL.md",
+      "computedHash": "ed37bafeb0ad000996f484242a03dac1fd8b91a04f54d807d21524d7ec2ccdb3"
+    }
+  }
+}
