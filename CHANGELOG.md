@@ -9,6 +9,9 @@
 - `cloudflare-pages-web-analytics-status` skill for interpreting Cloudflare
   Pages and Web Analytics status output, including guidance on when MCP is
   useful versus unnecessary.
+- `Justfile`, local Git hook samples, hook installation docs, and lightweight
+  quality checks for skill schema, capability index drift, Markdown, and shell
+  scripts.
 
 ## 1.0.0 (2026-06-30)
 

@@ -35,6 +35,7 @@
 ## Tooling
 
 - `skills/tooling/just-command-orchestration/SKILL.md`
+- `tools/quality/check_all.sh`
 
 ## Operations
 

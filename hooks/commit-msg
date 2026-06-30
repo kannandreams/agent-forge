@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+message_file="${1:?commit message file is required}"
+first_line="$(sed -n '1p' "$message_file")"
+
+case "$first_line" in
+  ""|Merge\ *|Revert\ *|fixup!\ *|squash!\ *)
+    exit 0
+    ;;
+esac
+
+if [[ "$first_line" =~ ^(feat|fix|docs|test|ci|build|chore|refactor|perf|style|revert)(\([a-zA-Z0-9._-]+\))?!?:[[:space:]].+ ]]; then
+  exit 0
+fi
+
+cat >&2 <<'EOF'
+Invalid commit message.
+
+Expected:
+  type: summary
+  type(scope): summary
+
+Allowed types:
+  feat, fix, docs, test, ci, build, chore, refactor, perf, style, revert
+EOF
+
+exit 1
