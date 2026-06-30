@@ -52,6 +52,7 @@ agent-forge/
 - `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
 - `templates/` contains Markdown structures that standardize outputs and inputs.
 - `tools/` contains narrow executable helpers and tool-specific guidance.
+- `bin/` contains user-facing command wrappers such as `agent-wrap`.
 - `agents/` contains agent-oriented assets and conventions.
 - `examples/` contains practical examples of how the system is used in real projects.
 
@@ -93,6 +94,12 @@ If a project only needs a lightweight backlog from a goal or feature idea, it ca
 If a project needs a consistent milestone plan, it can use:
 
 `templates/milestone_template.md`
+
+### Use the CLI wrapper
+
+To browse skills, view docs, or install a skill through `npx skills add`, run:
+
+`bin/agent-wrap`
 
 ## Contribution Standard
 

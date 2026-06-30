@@ -3,7 +3,10 @@ set shell := ["bash", "-euo", "pipefail", "-c"]
 default:
     just --list
 
-check: check-skills check-index check-markdown check-shell
+agent-wrap:
+    bin/agent-wrap
+
+check: check-skills check-index check-markdown check-shell check-python
 
 check-skills:
     tools/quality/check_skill_schema.sh
@@ -16,6 +19,9 @@ check-markdown:
 
 check-shell:
     tools/quality/check_shell.sh
+
+check-python:
+    tools/quality/check_python.sh
 
 install-hooks:
     hooks/install.sh
