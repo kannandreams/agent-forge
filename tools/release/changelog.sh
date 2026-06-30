@@ -39,16 +39,56 @@ EOF
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --since)   SINCE="$2"; shift 2 ;;
-    --until)   UNTIL="$2"; shift 2 ;;
-    --format)  FORMAT="$2"; shift 2 ;;
-    --output)  OUTPUT="$2"; shift 2 ;;
-    --prefix)  PREFIX="$2"; shift 2 ;;
+    --since)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --since requires a ref" >&2
+        exit 1
+      fi
+      SINCE="$2"
+      shift 2
+      ;;
+    --until)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --until requires a ref" >&2
+        exit 1
+      fi
+      UNTIL="$2"
+      shift 2
+      ;;
+    --format)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --format requires markdown or plain" >&2
+        exit 1
+      fi
+      FORMAT="$2"
+      shift 2
+      ;;
+    --output)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --output requires a file path" >&2
+        exit 1
+      fi
+      OUTPUT="$2"
+      shift 2
+      ;;
+    --prefix)
+      if [[ $# -lt 2 ]]; then
+        echo "Error: --prefix requires a value" >&2
+        exit 1
+      fi
+      PREFIX="$2"
+      shift 2
+      ;;
     -h|--help) usage ;;
     -*)        echo "Unknown option: $1"; usage ;;
     *)         echo "Unknown argument: $1"; usage ;;
   esac
 done
+
+if [[ "$FORMAT" != "markdown" && "$FORMAT" != "plain" ]]; then
+  echo "Error: format must be 'markdown' or 'plain'" >&2
+  exit 1
+fi
 
 # Auto-detect since tag if not specified
 if [[ -z "$SINCE" ]]; then
@@ -72,9 +112,7 @@ OTHER=$(git log "$RANGE" --no-merges --pretty=format:"%s" | grep -v "^feat\|^fix
 CURRENT_TAG=$(git describe --tags --abbrev=0 --match "${PREFIX}*" 2>/dev/null || echo "unreleased")
 DATE=$(date +%Y-%m-%d)
 
-# Generate output
-if [[ "$FORMAT" == "markdown" ]]; then
-  {
+emit_markdown() {
     echo "# Changelog"
     echo ""
     echo "## ${CURRENT_TAG} (${DATE})"
@@ -82,31 +120,31 @@ if [[ "$FORMAT" == "markdown" ]]; then
 
     if [[ -n "$FEATURES" ]]; then
       echo "### Features"
-      echo "$FEATURES" | sed 's/^feat[:( ]*/- /' | sed 's/^/- /'
+      echo "$FEATURES" | sed -E 's/^feat(\([^)]*\))?!?:[[:space:]]*/- /'
       echo ""
     fi
 
     if [[ -n "$FIXES" ]]; then
       echo "### Fixes"
-      echo "$FIXES" | sed 's/^fix[:( ]*/- /' | sed 's/^/- /'
+      echo "$FIXES" | sed -E 's/^fix(\([^)]*\))?!?:[[:space:]]*/- /'
       echo ""
     fi
 
     if [[ -n "$REFS" ]]; then
       echo "### Refactoring"
-      echo "$REFS" | sed 's/^refactor[:( ]*/- /' | sed 's/^/- /'
+      echo "$REFS" | sed -E 's/^refactor(\([^)]*\))?!?:[[:space:]]*/- /'
       echo ""
     fi
 
     if [[ -n "$DOCS" ]]; then
       echo "### Documentation"
-      echo "$DOCS" | sed 's/^docs[:( ]*/- /' | sed 's/^/- /'
+      echo "$DOCS" | sed -E 's/^docs(\([^)]*\))?!?:[[:space:]]*/- /'
       echo ""
     fi
 
     if [[ -n "$CHORES" ]]; then
       echo "### Maintenance"
-      echo "$CHORES" | sed 's/^chore[:( ]*/- /' | sed 's/^/- /'
+      echo "$CHORES" | sed -E 's/^chore(\([^)]*\))?!?:[[:space:]]*/- /'
       echo ""
     fi
 
@@ -118,26 +156,65 @@ if [[ "$FORMAT" == "markdown" ]]; then
 
     echo "---"
     echo "Range: \`${RANGE}\`"
-  } > "${OUTPUT:-/dev/stdout}"
-else
-  {
+}
+
+emit_plain() {
     echo "Changelog — ${CURRENT_TAG} (${DATE})"
     echo ""
 
     if [[ -n "$FEATURES" ]]; then
       echo "Features:"
-      echo "$FEATURES" | sed 's/^feat[:( ]*/  - /' | sed 's/^/  - /'
+      echo "$FEATURES" | sed -E 's/^feat(\([^)]*\))?!?:[[:space:]]*/  - /'
       echo ""
     fi
 
     if [[ -n "$FIXES" ]]; then
       echo "Fixes:"
-      echo "$FIXES" | sed 's/^fix[:( ]*/  - /' | sed 's/^/  - /'
+      echo "$FIXES" | sed -E 's/^fix(\([^)]*\))?!?:[[:space:]]*/  - /'
+      echo ""
+    fi
+
+    if [[ -n "$REFS" ]]; then
+      echo "Refactoring:"
+      echo "$REFS" | sed -E 's/^refactor(\([^)]*\))?!?:[[:space:]]*/  - /'
+      echo ""
+    fi
+
+    if [[ -n "$DOCS" ]]; then
+      echo "Documentation:"
+      echo "$DOCS" | sed -E 's/^docs(\([^)]*\))?!?:[[:space:]]*/  - /'
+      echo ""
+    fi
+
+    if [[ -n "$CHORES" ]]; then
+      echo "Maintenance:"
+      echo "$CHORES" | sed -E 's/^chore(\([^)]*\))?!?:[[:space:]]*/  - /'
+      echo ""
+    fi
+
+    if [[ -n "$OTHER" ]]; then
+      echo "Other Changes:"
+      echo "$OTHER" | sed 's/^/  - /'
       echo ""
     fi
 
     echo "Range: ${RANGE}"
-  } > "${OUTPUT:-/dev/stdout}"
+}
+
+# Generate output. Do not redirect to /dev/stdout; some restricted runtimes
+# allow writing stdout but block opening that device path.
+if [[ "$FORMAT" == "markdown" ]]; then
+  if [[ -n "$OUTPUT" ]]; then
+    emit_markdown > "$OUTPUT"
+  else
+    emit_markdown
+  fi
+else
+  if [[ -n "$OUTPUT" ]]; then
+    emit_plain > "$OUTPUT"
+  else
+    emit_plain
+  fi
 fi
 
 echo "Changelog generated for range ${RANGE}" >&2

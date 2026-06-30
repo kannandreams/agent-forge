@@ -1,12 +1,16 @@
 # Automation Tools
 
-This folder is reserved for generic automation support.
+This folder is for automation helpers that are too general for a specific
+domain tool folder.
 
-Expected future content may include:
+## Acceptance Bar
 
-- repeatable scripts
-- scheduled checks
-- batch operations
-- integration adapters
+Add a script here only when it has:
 
-Keep tool logic narrow and focused on execution.
+- a clear caller and execution context
+- deterministic inputs and outputs
+- a dry-run mode when it changes external state
+- failure messages that explain what to fix next
+
+Keep reusable process in `skills/` or `workflows/`; keep only execution logic
+here.

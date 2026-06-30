@@ -1,6 +1,7 @@
 # Philosophy
 
-`agent-forge` is organized around reusable capabilities rather than isolated prompts.
+`agent-forge` is organized around reusable engineering capabilities rather than
+isolated prompts or one-off instructions.
 
 ## Core Ideas
 
@@ -12,9 +13,16 @@ Prompts are transient. Capabilities can be versioned, reused, and improved over 
 
 A single task can be useful, but durable value comes from repeatable workflows that combine multiple skills into a reliable operating pattern.
 
-### Reusable Intelligence
+### Capability Contracts
 
-Domain knowledge should live in shared assets that can be applied across projects without rewriting the same instructions in different places.
+Every capability should make its contract obvious:
+
+- when to use it
+- when not to use it
+- required inputs
+- expected outputs
+- rules that affect execution
+- acceptance criteria that can be checked
 
 ### Composable Execution Systems
 
@@ -25,14 +33,17 @@ The repository should be made of small pieces that work together:
 - templates define structure
 - tools define execution
 
-### Human + AI Collaboration
+### Human And Agent Use
 
-The system should work for both humans and agents. Humans need clarity and maintainability; agents need explicit structure and predictable boundaries.
+The system must be readable by humans and precise enough for agents. That means
+short files, concrete boundaries, stable paths, and no hidden assumptions about
+a specific model, IDE, or runtime.
 
 ## What This Means In Practice
 
-- keep reusable knowledge centralized
+- keep reusable process centralized
 - keep project state local to the project
 - design for reuse instead of one-off completion
 - prefer explicit structure over hidden assumptions
 - avoid coupling shared assets to a specific model or vendor
+- delete or rewrite generic prose that does not change execution

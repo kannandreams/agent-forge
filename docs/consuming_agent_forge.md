@@ -11,7 +11,9 @@ There are four practical ways to consume `agent-forge`:
 3. git subtree
 4. vendored copy
 
-The recommended default is `git submodule` or `git subtree`, because both make the shared files visible inside the consuming repository.
+The recommended default is `git submodule` when teams want explicit version
+pinning, or `git subtree` when they want the files to behave like normal repo
+content. Both make the shared files visible inside the consuming repository.
 
 ## Recommended Layout
 
@@ -46,7 +48,7 @@ Use this only when your agent runtime can read sibling directories. It is simple
 
 ## Option 2: Git Submodule
 
-This is the cleanest option when you want:
+Use this when you want:
 
 - a stable in-repo path
 - independent version pinning
@@ -77,7 +79,7 @@ Use this when you want downstream repos to pin a specific `agent-forge` revision
 
 ## Option 3: Git Subtree
 
-This is a good option when you want:
+Use this when you want:
 
 - the files committed directly into the consuming repo
 - no submodule workflow
@@ -107,7 +109,7 @@ Use this only when:
 - the consuming repo needs a frozen local snapshot
 - the team does not want git submodule or subtree workflows
 
-This is the least maintainable option because updates are manual.
+This has the highest maintenance cost because updates are manual.
 
 ## Recommended AGENTS.md Pattern
 
@@ -154,6 +156,17 @@ Keep these in `agent-forge`:
 - workflow patterns
 - shared tooling conventions
 - generic capability definitions
+
+## Decision Guide
+
+Choose the mount strategy by operational need:
+
+| Need | Recommended model |
+|------|-------------------|
+| Pin exact shared guidance per repo | Git submodule |
+| Keep shared files as normal repository content | Git subtree |
+| Local experimentation across sibling repos | Sibling repository |
+| Frozen snapshot with manual updates | Vendored copy |
 
 ## Recommendation
 

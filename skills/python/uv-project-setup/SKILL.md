@@ -36,7 +36,7 @@ package manager — environment, dependencies, and basic layout only.
 - dependency management approach
 - basic project layout
 - recommended developer commands
-- notes for future automation
+- verification commands
 
 ## Rules
 
@@ -76,4 +76,5 @@ The setup is acceptable when it:
 - uses `uv` for environment and dependency management
 - has a clear package layout
 - documents the main developer commands
+- states whether `uv.lock` is committed and why
 - avoids unnecessary tooling complexity

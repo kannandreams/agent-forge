@@ -2,6 +2,15 @@
 
 `agent-forge` is organized as a reusable capability library. This index groups the shared assets by topic so downstream projects can reference only what they need.
 
+## Selection Rules
+
+- Use a skill when one capability is enough.
+- Use a workflow when multiple skills need sequencing or handoff.
+- Use a template when the output shape matters.
+- Use a tool only when execution or external state changes are required.
+- Prefer the narrowest matching asset. Do not load a full workflow for a single
+  review, checklist, or one-file decision.
+
 ## Planning
 
 - `skills/github/backlog-creation/SKILL.md`
@@ -47,7 +56,8 @@
 
 ## How To Use
 
-Downstream repos should reference only the relevant topic entries for the task at hand.
+Downstream repos should reference only the relevant topic entries for the task
+at hand and keep project-specific state in the consuming repo.
 
 Example:
 

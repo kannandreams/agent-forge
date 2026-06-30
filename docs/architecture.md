@@ -1,6 +1,8 @@
 # Architecture
 
-`agent-forge` is a Markdown-first capability library with a simple layered structure.
+`agent-forge` is a Markdown-first capability library with a simple layered
+structure. The layers are deliberately boring: they make it clear where process
+definition ends and execution begins.
 
 ## Layers
 
@@ -18,7 +20,9 @@ Templates standardize structure. They help projects produce consistent outputs w
 
 ### Tools
 
-Tools execute actions. They may eventually connect to APIs, scripts, automation, or local utilities, but the repository starts with lightweight placeholders.
+Tools execute actions. They connect process guidance to shell scripts, APIs, or
+local utilities. Tool logic should stay narrow; reusable judgment belongs in
+skills and workflows.
 
 ### Examples
 
@@ -31,7 +35,7 @@ The repository is intentionally shallow:
 - domain folders group related skills
 - workflow files describe end-to-end processes
 - templates provide reusable document shapes
-- tool folders hold future integration points
+- tool folders hold executable helpers with focused README files
 - docs explain the operating model
 
 ## Design Constraints
@@ -40,6 +44,7 @@ The repository is intentionally shallow:
 - no vendor lock-in
 - no assumptions about a single agent runtime
 - no hidden coupling between shared assets and project-specific state
+- no placeholder directories without a stated owner, purpose, or next action
 
 ## Growth Model
 

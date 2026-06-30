@@ -1,10 +1,13 @@
 # Agents
 
-This folder is reserved for agent-specific conventions, coordination notes, and reusable agent assets.
+This folder is for agent-facing conventions that are reusable across projects.
 
-Future content may include:
+Add content here only when it defines a stable coordination contract, such as:
 
-- agent role definitions
-- coordination patterns
-- handoff conventions
-- context assembly guidance
+- role boundaries
+- handoff formats
+- context assembly rules
+- escalation rules
+
+Do not put project-specific instructions here. Keep local agent behavior in the
+consuming repository.

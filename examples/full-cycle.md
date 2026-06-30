@@ -88,11 +88,14 @@ The team invokes the incident workflow.
 - `incident_response_workflow` — stabilize → gather facts → mitigate → record
   follow-up
 
-## What This Shows
+## Reuse Notes
 
-Six skills and four workflows composed across a single feature delivery.
-The same library handles the happy path (design → ship) and the unhappy path
-(incident response) without duplicated process.
+- The design phase chooses the integration boundary before implementation.
+- The planning phase converts that boundary into owned work items.
+- The review phase checks behavior and test risk against the design.
+- The release phase records validation and rollback before shipping.
+- The incident phase preserves the timeline and creates follow-up work instead
+  of rewriting the release plan.
 
-Each skill remains a small, focused capability. Workflows chain them together
-when the task requires multiple steps. Templates keep outputs consistent.
+Reuse this pattern when a change crosses design, delivery, release, and
+operations. For smaller changes, select only the relevant workflow.

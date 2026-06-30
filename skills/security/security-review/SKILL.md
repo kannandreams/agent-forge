@@ -80,9 +80,10 @@ a code-level review.
 
 The review is complete when it:
 
-- identifies every exposed secret or credential
-- confirms no injection vectors remain unaddressed
-- verifies auth and authorization paths for the changed scope
+- documents the files, configs, and manifests inspected
+- reports any exposed secret or credential found without repeating the secret value
+- checks injection paths introduced or changed in scope
+- checks authentication and authorization paths affected by the change
 - flags dependency risks with specific version or CVE references
 - provides actionable fix recommendations for each finding
 - documents residual risk where a fix is deferred

@@ -37,9 +37,30 @@ PROJECT_NAME=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --python)    PYTHON_VERSION="$2"; shift 2 ;;
-    --layout)    LAYOUT="$2"; shift 2 ;;
-    --license)   LICENSE="$2"; shift 2 ;;
+    --python)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --python requires a version" >&2
+        exit 1
+      fi
+      PYTHON_VERSION="$2"
+      shift 2
+      ;;
+    --layout)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --layout requires src or flat" >&2
+        exit 1
+      fi
+      LAYOUT="$2"
+      shift 2
+      ;;
+    --license)
+      if [[ $# -lt 2 || "$2" == -* ]]; then
+        echo "Error: --license requires a value" >&2
+        exit 1
+      fi
+      LICENSE="$2"
+      shift 2
+      ;;
     --dry-run)   DRY_RUN=true; shift ;;
     -h|--help)   usage ;;
     -*)
@@ -68,6 +89,18 @@ if [[ "$PROJECT_NAME" =~ [^a-zA-Z0-9_-] ]]; then
   exit 1
 fi
 
+if [[ "$LAYOUT" != "src" && "$LAYOUT" != "flat" ]]; then
+  echo "Error: layout must be 'src' or 'flat'"
+  exit 1
+fi
+
+PACKAGE_NAME="${PROJECT_NAME//-/_}"
+
+if [[ ! "$PACKAGE_NAME" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
+  echo "Error: derived package name '$PACKAGE_NAME' is not a valid Python identifier"
+  exit 1
+fi
+
 if [[ -d "$PROJECT_NAME" ]]; then
   echo "Error: directory '$PROJECT_NAME' already exists"
   exit 1
@@ -86,6 +119,7 @@ create_file() {
 echo "Scaffolding Python project: $PROJECT_NAME"
 echo "  Python: $PYTHON_VERSION"
 echo "  Layout: $LAYOUT"
+echo "  Package: $PACKAGE_NAME"
 echo "  License: $LICENSE"
 echo ""
 
@@ -94,11 +128,11 @@ create_dir "$PROJECT_NAME"
 create_dir "$PROJECT_NAME/tests"
 
 if [[ "$LAYOUT" == "src" ]]; then
-  create_dir "$PROJECT_NAME/src/$PROJECT_NAME"
-  MODULE_PATH="src/$PROJECT_NAME"
+  create_dir "$PROJECT_NAME/src/$PACKAGE_NAME"
+  MODULE_PATH="src/$PACKAGE_NAME"
 else
-  MODULE_PATH="$PROJECT_NAME"
-  create_dir "$PROJECT_NAME/$PROJECT_NAME"
+  MODULE_PATH="$PACKAGE_NAME"
+  create_dir "$PROJECT_NAME/$PACKAGE_NAME"
 fi
 
 # .python-version
@@ -139,7 +173,6 @@ __pycache__/
 dist/
 build/
 .venv/
-uv.lock
 .pytest_cache/
 GIEOF
 create_file "$PROJECT_NAME/.gitignore" "$GITIGNORE"
@@ -150,16 +183,16 @@ create_file "$PROJECT_NAME/tests/__init__.py" ""
 # test file
 read -rd '' TESTFILE <<TESTEOF || true
 def test_project_can_be_imported():
-    import $PROJECT_NAME
-    assert $PROJECT_NAME is not None
+    import $PACKAGE_NAME
+    assert $PACKAGE_NAME is not None
 TESTEOF
 create_file "$PROJECT_NAME/tests/test_bootstrap.py" "$TESTFILE"
 
 # Module init
 if [[ "$LAYOUT" == "src" ]]; then
-  create_file "$PROJECT_NAME/src/$PROJECT_NAME/__init__.py" "__version__ = \"0.1.0\""
+  create_file "$PROJECT_NAME/src/$PACKAGE_NAME/__init__.py" "__version__ = \"0.1.0\""
 else
-  create_file "$PROJECT_NAME/$PROJECT_NAME/__init__.py" "__version__ = \"0.1.0\""
+  create_file "$PROJECT_NAME/$PACKAGE_NAME/__init__.py" "__version__ = \"0.1.0\""
 fi
 
 echo ""

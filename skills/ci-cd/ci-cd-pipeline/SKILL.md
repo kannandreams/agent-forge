@@ -51,10 +51,10 @@ not the runtime infrastructure.
 - Each stage should have a clear pass/fail condition.
 - Separate environment-specific configuration from pipeline logic.
 - Never hard-code secrets in pipeline files — use the platform's secret store.
-- The pipeline should fail fast on build or test failures before reaching deploy.
+- The pipeline fails fast on build or test failures before reaching deploy.
 - Include a rollback path in the deploy stage, not as an afterthought.
-- Keep the pipeline definition readable — a new team member should understand
-  it in under 10 minutes.
+- Keep the pipeline definition readable enough to review in one pass: clear
+  stage names, explicit commands, and no hidden deploy side effects.
 
 ## Example Workflow
 

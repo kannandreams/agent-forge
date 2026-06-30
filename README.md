@@ -1,28 +1,31 @@
 # agent-forge
 
-`agent-forge` is a reusable engineering and AI capability library for multiple projects.
-
-It is not a prompt dump. It is a shared execution system for humans and agents: a place to keep reusable skills, workflows, templates, tools, examples, and documentation in one modular repository.
+`agent-forge` is a reusable engineering capability library for projects that
+want shared operating practices without copying process notes into every repo.
 
 ## Purpose
 
-The goal is to centralize capability instead of repeating it in every project. A project should be able to reference a skill, follow a workflow, or reuse a template without re-implementing the same operating logic in different places.
+The goal is to keep repeatable engineering judgment in one maintained place:
+how to plan, review, test, release, debug, and operate software. Downstream
+projects should reference only the pieces they need and keep local decisions in
+the local repo.
 
-This repository is designed to:
+This repository optimizes for:
 
-- scale over time
-- stay model and vendor agnostic
-- support both AI agents and humans
-- reduce duplication across projects
-- keep reusable capability discoverable and maintainable
+- clear ownership boundaries between shared guidance and project-specific state
+- small, composable capabilities with explicit inputs and outputs
+- vendor-neutral Markdown that works for humans, agents, and CI
+- examples that prove usage instead of restating the rules
+- tools that automate narrow, well-understood actions
 
 ## Philosophy
 
-- Capabilities over prompts
-- Workflows over isolated tasks
-- Reusable intelligence over one-off instructions
-- Composable execution systems over monolithic automation
-- Human and AI collaboration over agent-only assumptions
+- Capabilities over prompts.
+- Workflows over isolated tasks.
+- Contracts over slogans: every reusable asset should name its inputs, outputs,
+  boundaries, and verification path.
+- Small tools over broad automation.
+- Local context stays local.
 
 The core idea is simple: skills define what can be done, workflows define how capabilities are composed, templates define the expected structure, and tools carry out the actual action when needed.
 
@@ -48,13 +51,14 @@ agent-forge/
 - `skills/` contains reusable capability modules, organized by domain.
 - `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
 - `templates/` contains Markdown structures that standardize outputs and inputs.
-- `tools/` contains future executable integrations and tool-specific guidance.
+- `tools/` contains narrow executable helpers and tool-specific guidance.
 - `agents/` contains agent-oriented assets and conventions.
 - `examples/` contains practical examples of how the system is used in real projects.
 
 ## How Projects Use This Repository
 
-Projects should reference this repository as a shared source of truth for reusable capability.
+Projects should reference this repository as a shared source of truth for
+repeatable engineering capability.
 
 Typical usage patterns:
 
@@ -63,7 +67,8 @@ Typical usage patterns:
 3. Use a template when you want consistent output formatting or handoff structure.
 4. Call out to a tool only when the task requires execution, integration, or side effects.
 
-This keeps projects small and focused while allowing the reusable system to evolve centrally.
+This keeps project repos focused on product code and local decisions while the
+shared operating model evolves centrally.
 
 ## Example Usage
 
@@ -89,38 +94,28 @@ If a project needs a consistent milestone plan, it can use:
 
 `templates/milestone_template.md`
 
-## Reference Model
+## Contribution Standard
 
-Projects should treat this repository as a capability library, not as copy-paste content.
+Additions should be treated like product code:
 
-Recommended pattern:
+- name the problem the asset solves
+- define the caller, inputs, outputs, and non-goals
+- keep the smallest useful surface area
+- include verification or acceptance criteria that can be checked
+- add an example when the pattern is likely to be reused
+- avoid project-specific state, vendor lock-in, and model-specific wording
 
-- keep domain knowledge here
-- keep project-specific state in the project
-- avoid hard-coding vendor or model assumptions into reusable assets
-- favor small, composable building blocks over large bespoke procedures
+Do not add broad "best practice" prose unless it changes a decision or action.
 
-## Future Vision
+## Roadmap
 
-Over time, `agent-forge` should become a durable library of:
+Near-term work:
 
-- domain skills
-- operational workflows
-- execution tools
-- reusable templates
-- agent coordination patterns
-- tested examples and patterns
-
-The long-term objective is a stable capability layer that can be shared across teams and projects without turning into prompt sprawl or duplicated process docs.
-
-## Suggested Next Milestones
-
-1. Add MCP server integration tooling and agent-specific configuration
-   templates.
-2. Expand the tools layer with a project health checker and a release
-   validator.
-3. Add more agent-specific configuration examples (OpenCode, Claude Code,
-   Codex).
-4. Introduce automated testing of skills and workflows to validate that
-   composed sequences produce correct outputs.
-5. Add database migration, API integration, and observability skills.
+1. Add validation scripts that check skill frontmatter, broken links, and
+   required sections.
+2. Add a project health checker that verifies downstream repos reference valid
+   capability paths.
+3. Add release validation around changelog quality, tag state, and rollback
+   notes.
+4. Expand the examples only where they exercise real workflows end to end.
+5. Add database migration, API integration, and observability capabilities.
