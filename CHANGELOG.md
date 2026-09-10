@@ -16,6 +16,19 @@
   Markdown docs, and invoking `npx skills add` for selected skills.
 - npm package metadata and `agent-forge` bin entry for running the CLI with
   `npx github:kannandreams/agent-forge`.
+- `reference-voice` skill for writing documentation, release notes and UI copy
+  in reference voice, with the six tells of essay voice and three checks to run
+  before committing prose.
+- `pull-request-lifecycle` skill for taking a change from working tree to
+  merged pull request, covering explicit file staging, author attribution, and
+  waiting on the checks a pull request itself introduces.
+
+### Changed
+
+- `release-management` now separates authorization to merge from authorization
+  to release, and requires an explicit go-ahead before tagging or publishing.
+- `uv-project-setup` now rules out bare `pip` for every Python step, locally and
+  in CI, and points at `uv run --with` for one-off scripts.
 
 ## 1.0.0 (2026-06-30)
 

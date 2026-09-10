@@ -28,6 +28,7 @@
 
 ## Delivery
 
+- `skills/github/pull-request-lifecycle/SKILL.md`
 - `skills/release/release-management/SKILL.md`
 - `skills/ci-cd/ci-cd-pipeline/SKILL.md`
 - `workflows/release_workflow.md`
@@ -54,6 +55,10 @@
 - `skills/architecture/cli-first-tool-design/SKILL.md`
 - `skills/architecture/artifact-driven-integration/SKILL.md`
 - `templates/architecture_template.md`
+
+## Writing
+
+- `skills/writing/reference-voice/SKILL.md`
 
 ## Python
 
