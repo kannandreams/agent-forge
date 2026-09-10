@@ -1,6 +1,6 @@
 ---
 name: uv-project-setup
-version: 1.0.0
+version: 1.1.0
 description: Set up a Python project with uv in a consistent, modern, and reproducible way.
 triggers:
   - "set up python project"
@@ -41,6 +41,10 @@ package manager — environment, dependencies, and basic layout only.
 ## Rules
 
 - Prefer reproducible dependency management.
+- Never install with bare `pip`. Every Python step goes through uv, locally, in
+  CI, and in hosted builds, so one resolver decides what is installed.
+- Reach for `uv run --with <package>` for a one-off script instead of
+  installing anything permanently.
 - Keep setup minimal and explicit.
 - Align the structure with the project's actual needs.
 - Avoid adding tools that do not solve a current problem.

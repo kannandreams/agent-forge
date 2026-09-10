@@ -1,6 +1,6 @@
 ---
 name: release-management
-version: 1.0.0
+version: 1.1.0
 description: Plan and coordinate a software release with enough structure to reduce avoidable release risk.
 triggers:
   - "plan a release"
@@ -45,6 +45,12 @@ event: what goes in, what gets validated, and how to roll back.
 - Verify the release candidate before publishing.
 - Include rollback thinking in the plan.
 - Avoid mixing release work with unrelated feature work.
+- Do not tag or publish without an explicit go-ahead from the author. A merged
+  change and a green pipeline are not a decision to release. Let work
+  accumulate on the trunk, run the checks, and wait to be told.
+- Treat authorization to merge as separate from authorization to release.
+  Someone who has said to land changes without asking has not said to ship
+  them.
 
 ## Example Workflow
 
