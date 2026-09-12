@@ -12,16 +12,14 @@
 - `Justfile`, local Git hook samples, hook installation docs, and lightweight
   quality checks for skill schema, capability index drift, Markdown, and shell
   scripts.
-- Node/npm `agent-forge` CLI wrapper for browsing skills, viewing rendered
-  Markdown docs, and invoking `npx skills add` for selected skills.
-- npm package metadata and `agent-forge` bin entry for running the CLI with
-  `npx github:kannandreams/agent-forge`.
 - `reference-voice` skill for writing documentation, release notes and UI copy
   in reference voice, with the six tells of essay voice and three checks to run
   before committing prose.
 - `pull-request-lifecycle` skill for taking a change from working tree to
   merged pull request, covering explicit file staging, author attribution, and
   waiting on the checks a pull request itself introduces.
+- Tuff installation and update guidance for consuming individual skills while
+  preserving Git-based access to the complete capability library.
 
 ### Changed
 
@@ -29,6 +27,12 @@
   to release, and requires an explicit go-ahead before tagging or publishing.
 - `uv-project-setup` now rules out bare `pip` for every Python step, locally and
   in CI, and points at `uv run --with` for one-off scripts.
+
+### Removed
+
+- The repository-specific Node/npm `agent-forge` CLI, its package metadata,
+  fixtures, documentation, and Node-only quality check. Tuff now provides the
+  supported skill installation and update lifecycle.
 
 ## 1.0.0 (2026-06-30)
 

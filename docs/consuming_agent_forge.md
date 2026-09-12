@@ -1,18 +1,64 @@
 # Consuming Agent Forge
 
-This document explains how downstream repositories should use `agent-forge` as a shared capability library.
+Downstream repositories can install individual skills with Tuff or mount the
+complete library when they also need workflows, templates, examples, hooks, or
+tools.
 
-## Consumption Models
+## Install An Individual Skill
 
-There are four practical ways to consume `agent-forge`:
+Use Tuff when a project needs one or more skills as managed agent capabilities.
+From the consuming repository:
+
+```bash
+tuff init
+tuff add skill https://github.com/kannandreams/agent-forge code-review \
+  --agent open-agents
+```
+
+The final argument is the skill's frontmatter `name`, not its repository path.
+Choose names from `docs/capabilities_index.md`. Repeat `tuff add skill` for each
+skill the project needs.
+
+Tuff records the Git source and resolved revision in the consuming project's
+`tuff.lock`. Commit that lockfile and the emitted agent files so developers and
+CI use the same capability revision.
+
+## Pull Skill Updates
+
+Inspect upstream state before applying an update:
+
+```bash
+tuff outdated
+tuff diff code-review --upstream
+tuff update code-review --check
+```
+
+Apply the reviewed update and validate all tracked capabilities:
+
+```bash
+tuff update code-review
+tuff check
+```
+
+Do not use `--force` as the default update path. A normal update protects local
+drift; reconcile intentional local edits before replacing an installed copy.
+
+## Use The Complete Library
+
+Tuff manages installable capabilities. The workflows, templates, examples,
+hooks, tools, and repository documentation are also useful as reference
+material, but they remain ordinary files in this library. Mount the repository
+when a project needs those assets.
+
+There are four practical Git-based layouts:
 
 1. sibling repository
 2. git submodule
 3. git subtree
 4. vendored copy
 
-The recommended default is `git submodule` when teams want explicit version
-pinning, or `git subtree` when they want the files to behave like normal repo
+The recommended default is a git submodule when teams want explicit version
+pinning, or a git subtree when they want the files to behave like normal repo
 content. Both make the shared files visible inside the consuming repository.
 
 ## Recommended Layout
@@ -170,10 +216,11 @@ Choose the mount strategy by operational need:
 
 ## Recommendation
 
-If you want the most predictable setup for Codex, VS Code agents, and CI:
+- Use Tuff for individual skills that should be emitted into an agent harness,
+  versioned, checked for drift, and updated from upstream.
+- Mount `agent-forge` at `vendor/agent-forge/` when the project needs the full
+  library, then reference only the relevant entries from
+  `docs/capabilities_index.md` in the consuming repository's `AGENTS.md`.
 
-1. mount `agent-forge` inside the consuming repo at `vendor/agent-forge/`
-2. reference `vendor/agent-forge/docs/capabilities_index.md`
-3. list only the relevant topic files in the consuming repo `AGENTS.md`
-
-That gives you stable paths, explicit version control, and a clean boundary between shared capability and project-specific guidance.
+Both approaches keep project-specific decisions local while preserving a clear
+update path for shared capability.

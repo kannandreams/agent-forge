@@ -36,7 +36,6 @@
 ## Tooling
 
 - `skills/tooling/just-command-orchestration/SKILL.md`
-- `bin/agent-forge`
 - `tools/quality/check_all.sh`
 
 ## Operations
