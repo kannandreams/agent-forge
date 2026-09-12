@@ -27,6 +27,8 @@
   to release, and requires an explicit go-ahead before tagging or publishing.
 - `uv-project-setup` now rules out bare `pip` for every Python step, locally and
   in CI, and points at `uv run --with` for one-off scripts.
+- The README now states the repository's capability-library purpose directly,
+  links every skill, and documents Tuff and direct-reference consumption paths.
 
 ### Removed
 

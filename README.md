@@ -1,126 +1,129 @@
 # agent-forge
 
-`agent-forge` is a reusable engineering capability library for projects that
-want shared operating practices without copying process notes into every repo.
+`agent-forge` keeps reusable skills and other agent capabilities in one
+repository. Projects can reference the files directly or install selected
+skills with [Tuff](https://tuffcli.dev/).
 
-## Purpose
+The repository contains shared guidance and execution helpers. Project-specific
+decisions, paths, and state stay in the project that uses them.
 
-The goal is to keep repeatable engineering judgment in one maintained place:
-how to plan, review, test, release, debug, and operate software. Downstream
-projects should reference only the pieces they need and keep local decisions in
-the local repo.
+## Skills
 
-This repository optimizes for:
+Each skill is a standalone capability with its own inputs, outputs, rules, and
+acceptance criteria.
 
-- clear ownership boundaries between shared guidance and project-specific state
-- small, composable capabilities with explicit inputs and outputs
-- vendor-neutral Markdown that works for humans, agents, and CI
-- examples that prove usage instead of restating the rules
-- tools that automate narrow, well-understood actions
+### Architecture
 
-## Philosophy
+- [artifact-driven-integration](skills/architecture/artifact-driven-integration/SKILL.md):
+  integrate through stable artifacts instead of internal runtime behavior.
+- [cli-first-tool-design](skills/architecture/cli-first-tool-design/SKILL.md):
+  prove a tool's core workflow through a command-line interface.
+- [service-design](skills/architecture/service-design/SKILL.md): define service
+  responsibilities, boundaries, interfaces, data flow, and operations.
 
-- Capabilities over prompts.
-- Workflows over isolated tasks.
-- Contracts over slogans: every reusable asset should name its inputs, outputs,
-  boundaries, and verification path.
-- Small tools over broad automation.
-- Local context stays local.
+### CI/CD
 
-The core idea is simple: skills define what can be done, workflows define how capabilities are composed, templates define the expected structure, and tools carry out the actual action when needed.
+- [ci-cd-pipeline](skills/ci-cd/ci-cd-pipeline/SKILL.md): design a pipeline that
+  builds, tests, and deploys software.
 
-## Repository Structure
+### Cloudflare
 
-```text
-agent-forge/
-├── README.md
-├── AGENTS.md
-├── docs/
-├── skills/
-├── workflows/
-├── templates/
-├── tools/
-├── agents/
-├── examples/
-└── .gitignore
-```
+- [cloudflare-pages-web-analytics-status](skills/cloudflare/cloudflare-pages-web-analytics-status/SKILL.md):
+  interpret Pages and Web Analytics deployment status.
 
-- `docs/` contains repository-level guidance and architecture notes.
-- `docs/capabilities_index.md` provides a topic-based index of reusable capabilities.
-- `docs/consuming_agent_forge.md` explains how downstream repositories should mount and reference the shared library.
-- `skills/` contains reusable capability modules, organized by domain.
-- `workflows/` contains repeatable multi-step operating patterns that orchestrate skills.
-- `templates/` contains Markdown structures that standardize outputs and inputs.
-- `tools/` contains narrow executable helpers and tool-specific guidance.
-- `agents/` contains agent-oriented assets and conventions.
-- `examples/` contains practical examples of how the system is used in real projects.
+### Debugging
 
-## How Projects Use This Repository
+- [debugging](skills/debugging/debugging/SKILL.md): diagnose issues in
+  development, staging, and production.
 
-Projects should reference this repository as a shared source of truth for
-repeatable engineering capability.
+### GitHub
 
-Typical usage patterns:
+- [backlog-creation](skills/github/backlog-creation/SKILL.md): turn a goal or
+  feature idea into an actionable backlog.
+- [code-review](skills/github/code-review/SKILL.md): review a change for
+  correctness, clarity, maintainability, and risk.
+- [issue-breakdown](skills/github/issue-breakdown/SKILL.md): split an issue into
+  tasks with dependencies and implementation notes.
+- [project-milestone](skills/github/project-milestone/SKILL.md): structure a
+  milestone into executable work items.
+- [pull-request-lifecycle](skills/github/pull-request-lifecycle/SKILL.md): take
+  a working-tree change through pull request and merge.
 
-1. Import or mirror a relevant skill into the project’s working context.
-2. Follow a workflow when a task needs multiple steps or coordination.
-3. Use a template when you want consistent output formatting or handoff structure.
-4. Call out to a tool only when the task requires execution, integration, or side effects.
+### Incident Management
 
-This keeps project repos focused on product code and local decisions while the
-shared operating model evolves centrally.
+- [incident-response](skills/incident/incident-response/SKILL.md): handle a
+  production incident from detection through follow-up.
 
-## Example Usage
+### Python
 
-### Use a skill directly
+- [packaging-standards](skills/python/packaging-standards/SKILL.md): define a
+  consistent Python packaging baseline.
+- [uv-project-setup](skills/python/uv-project-setup/SKILL.md): set up a
+  reproducible Python project with uv.
 
-If a project needs to break down a GitHub issue, it can reference:
+### Release
 
-`skills/github/issue-breakdown/SKILL.md`
+- [release-management](skills/release/release-management/SKILL.md): plan and
+  coordinate a software release.
 
-### Use a workflow
+### Security
 
-If a project needs a milestone delivered end to end, it can follow:
+- [security-review](skills/security/security-review/SKILL.md): review code,
+  configuration, and infrastructure for security risks.
 
-`workflows/milestone_execution.md`
+### Testing
 
-If a project only needs a lightweight backlog from a goal or feature idea, it can follow:
+- [test-strategy](skills/testing/test-strategy/SKILL.md): define a practical
+  testing approach for a codebase or change.
 
-`workflows/backlog_creation_workflow.md`
+### Tooling
 
-### Use a template
+- [just-command-orchestration](skills/tooling/just-command-orchestration/SKILL.md):
+  centralize project commands in a maintainable Justfile.
 
-If a project needs a consistent milestone plan, it can use:
+### Writing
 
-`templates/milestone_template.md`
+- [reference-voice](skills/writing/reference-voice/SKILL.md): write concise
+  documentation, release notes, and UI copy.
 
-## Install Skills With Tuff
+The [capabilities index](docs/capabilities_index.md) groups skills with the
+workflows, templates, and tools that support them.
 
-[Tuff](https://tuffcli.dev/) manages the installed copy, source revision,
-local drift, and upstream updates for a skill. Install the `tuff` command using
-one of the methods in the Tuff documentation, then initialize it once in the
-consuming repository:
+## Other Capabilities
+
+- [Workflows](workflows/) compose skills into repeatable sequences.
+- [Templates](templates/) standardize common outputs.
+- [Examples](examples/) show the capabilities in use.
+- [Hooks](hooks/) provide repository automation samples.
+- [Tools](tools/) execute focused actions and quality checks.
+- [Documentation](docs/) covers the architecture and consumption models.
+
+## Install A Skill With Tuff
+
+Install the `tuff` command, then initialize Tuff once in the consuming
+repository:
 
 ```bash
 tuff init
 ```
 
-Install a skill by its frontmatter `name` from this repository:
+Install a skill by its name:
 
 ```bash
 tuff add skill https://github.com/kannandreams/agent-forge code-review \
   --agent open-agents
 ```
 
-Use another skill name from `docs/capabilities_index.md` to install a different
-capability. The `open-agents` adapter writes the skill to `.agents/skills/` for
-agent harnesses that use the shared open-agent layout. Select a different Tuff
-adapter when a project needs a harness-specific layout.
+Replace `code-review` with any name from the skill index. The `open-agents`
+adapter writes to `.agents/skills/`. Tuff also provides harness-specific
+adapters.
 
-Review and pull upstream changes through Tuff:
+Commit the emitted capability files and `tuff.lock`. Tuff uses the lockfile to
+track the source revision, local drift, and upstream updates.
+
+Review and apply an update with:
 
 ```bash
-tuff list
 tuff outdated
 tuff diff code-review --upstream
 tuff update code-review --check
@@ -128,37 +131,23 @@ tuff update code-review
 tuff check
 ```
 
-Tuff refuses to overwrite local drift during a normal update. Review the diff
-and reconcile local changes deliberately instead of treating installed files as
-disposable copies.
+## Reference The Library Directly
 
-Workflows, templates, examples, hooks, and tools remain ordinary repository
-assets. Clone or mount the complete repository when a project needs those
-reference materials in addition to installed skills. See
-`docs/consuming_agent_forge.md` for both consumption models.
+Clone, mount, or vendor the repository when a project needs workflows,
+templates, examples, hooks, tools, or several skills as reference material.
+Point the project's `AGENTS.md` at the specific files it should use.
 
-## Contribution Standard
+See [Consuming Agent Forge](docs/consuming_agent_forge.md) for sibling checkout,
+submodule, subtree, and vendored layouts.
 
-Additions should be treated like product code:
+## Repository Model
 
-- name the problem the asset solves
-- define the caller, inputs, outputs, and non-goals
-- keep the smallest useful surface area
-- include verification or acceptance criteria that can be checked
-- add an example when the pattern is likely to be reused
-- avoid project-specific state, vendor lock-in, and model-specific wording
+- Skills describe reusable capabilities.
+- Workflows sequence skills.
+- Tools execute actions.
+- Templates standardize outputs.
+- Examples demonstrate usage.
 
-Do not add broad "best practice" prose unless it changes a decision or action.
-
-## Roadmap
-
-Near-term work:
-
-1. Add validation scripts that check skill frontmatter, broken links, and
-   required sections.
-2. Add a project health checker that verifies downstream repos reference valid
-   capability paths.
-3. Add release validation around changelog quality, tag state, and rollback
-   notes.
-4. Expand the examples only where they exercise real workflows end to end.
-5. Add database migration, API integration, and observability capabilities.
+Content stays Markdown-first, modular, and independent of a specific model or
+agent runtime. New capabilities should extend the smallest relevant layer and
+link to shared material instead of duplicating it.
